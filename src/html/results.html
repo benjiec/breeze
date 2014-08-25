@@ -9,16 +9,21 @@
 </p>
 
 <div ng-repeat="result in results">
-  <p> {{ result.label }}: {{ result.name }} </p>
+  <p> {{ result.label }}.
+      e-value: {{ result.evalue }}.
+      identities: {{ result.identities }}/{{ result.alignment.match.length }}.
+  </p>
+
   <ul>
-    <li> query start: {{ result.start }} </li>
-    <li> query end: {{ result.end }} </li>
-    <li> subject start: {{ result.start }} </li>
-    <li> subject end: {{ result.end }} </li>
-    <li> e-value: {{ result.evalue }} </li>
-    <li> identities: {{ result.identities }}/{{ result.alignment.match.length }} </li>
+    <li> query: {{ result.start }} - {{ result.end }} </li>
+    <li> match: {{ result.subject_start }} - {{ result.subject_end }} </li>
   </ul>
 
+  <p id="sv{{ $index }}">
+    {{ showAlignment($index, "#sv"+$index) }}
+  </p>
+
+  <div class="sequence">{{ result.alignment }}</div>
 </div>
 
 

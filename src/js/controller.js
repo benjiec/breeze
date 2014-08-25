@@ -20,6 +20,13 @@ function BreezeController($scope, $http) {
   $scope.databases = window.BreezeConfig._databases;
   $scope.results = null;
 
+  $scope.showAlignment = function(result_index, selector) {
+    jQuery(selector).empty();
+    var res = $scope.results[result_index];
+    var sv = window.SequenceViewer(jQuery, selector);
+    sv.setSequenceWithAnnotations($scope.query.sequence, [], res.start);
+  };
+
   $scope.makeQuery = function() {
     if (!$scope.query.sequence || !$scope.query.db || !$scope.query.input) {
       alert("Please enter a sequence, select sequence type, and a database");
