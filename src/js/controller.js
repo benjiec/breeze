@@ -3,8 +3,10 @@
 window.BreezeConfig = function() {
   var _databases = {};
 
-  function addDatabase(name, uri, params) {
-    _databases[name] = {uri: uri, params: params};
+  function addDatabase(name, uri, params, fetch_object_function) {
+    _databases[name] = { uri: uri,
+                         params: params,
+                         fetch_object_function: fetch_object_function };
   }
 
   return {
@@ -20,12 +22,44 @@ function BreezeController($scope, $http) {
   $scope.databases = window.BreezeConfig._databases;
   $scope.results = null;
 
-  $scope.showAlignment = function(result_index, selector) {
-    jQuery(selector).empty();
-    var res = $scope.results[result_index];
-    var sv = window.SequenceViewer(jQuery, selector);
-    sv.setSequenceWithAnnotations($scope.query.sequence, [], res.start);
-  };
+  function processResults(fetch_obj_f, results) {
+    var i = 0;
+    jQuery('.sv-container').remove();
+
+    var data = {};
+
+    $scope.results = _.map(results, function(res) {
+      i++;
+      var svid = "sv-container-"+i;
+
+      function addSv() {
+        var el = jQuery("#"+svid).addClass('sv-container');
+        el.empty();
+        var sv = window.SequenceViewer(jQuery, el);
+        sv.setSequenceWithAnnotations($scope.query.sequence, [], 1);
+      }
+
+      var d = {
+        res: res,
+        svId: svid,
+        addSv: addSv,
+        obj: null
+      };
+      data[res.label] = d;
+
+      return d;
+    });
+
+    if (fetch_obj_f !== undefined) {
+      var labels = _.keys(data);
+      fetch_obj_f($http, labels, function(objs) {
+        // expects a hash mapping label to object. each object has name,
+        // length, link, children attributes.  children should contain list of
+        // ids matching same format as res.label.
+        _.map(_.keys(objs), function(k) { data[k].obj = objs[k]; });
+      });
+    }
+  }
 
   $scope.makeQuery = function() {
     if (!$scope.query.sequence || !$scope.query.db || !$scope.query.input) {
@@ -37,6 +71,7 @@ function BreezeController($scope, $http) {
     var url = p.uri;
     var params = {};
     for (var x in p.params) { params[x] = p.params[x]; }
+    var fetch_obj_f = p.fetch_object_function;
 
     params['input'] = $scope.query.input;
     params['identity_threshold'] = 0.5;
@@ -58,7 +93,7 @@ function BreezeController($scope, $http) {
       data: encoded 
     }).success(function(data) {
       $scope.submitted = false;
-      $scope.results = data[1];
+      processResults(fetch_obj_f, data[1]);
     }).error(function(data, status, headers, config) {
       $scope.submitted = false;
       alert('Cannot blast, received error');

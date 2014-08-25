@@ -9,21 +9,23 @@
 </p>
 
 <div ng-repeat="result in results">
-  <p> {{ result.label }}.
-      e-value: {{ result.evalue }}.
-      identities: {{ result.identities }}/{{ result.alignment.match.length }}.
+  <p> {{ result.res.label }}:
+      <span ng-if="result.obj">
+        <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
+        ({{ result.obj.length }} bps).
+      </span>
+      e-value: {{ result.res.evalue }}.
+      identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
   </p>
 
   <ul>
-    <li> query: {{ result.start }} - {{ result.end }} </li>
-    <li> match: {{ result.subject_start }} - {{ result.subject_end }} </li>
+    <li> query: {{ result.res.start }} - {{ result.res.end }} </li>
+    <li> match: {{ result.res.subject_start }} - {{ result.res.subject_end }} </li>
   </ul>
 
-  <p id="sv{{ $index }}">
-    {{ showAlignment($index, "#sv"+$index) }}
-  </p>
+  <div id="{{ result.svId }}"></div>
+  {{ result.addSv() }}
 
-  <div class="sequence">{{ result.alignment }}</div>
 </div>
 
 
