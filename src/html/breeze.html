@@ -1,0 +1,9 @@
+<form>
+  <div class="form-inline">
+    Enter sequence
+    <textarea id="query" class="sequence" ng-model="query"></textarea>
+    <button class="btn btn-primary" ng-click="makeQuery()">Blast</button>
+  </div>
+</form>
+
+<partial template="results"></partial>

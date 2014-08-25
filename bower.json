@@ -1,0 +1,19 @@
+{
+  "name": "breeze",
+  "version": "0.0.1",
+  "main": [
+    "./dist/breeze.css",
+    "./dist/breeze.js",
+    "./dist/breeze.min.js",
+    "./dist/breeze_jst.js"
+  ],
+  "ignore": [ "lib", "src", "build_assets.py", "requirements.txt", ".gitignore", ".git" ],
+  "dependencies": {
+    "bootstrap": "3.0.0",
+    "angular": "1.2.4",
+    "angular-route": "1.2.4",
+    "angular-sanitize": "1.2.4",
+    "underscore": "1.6.0",
+    "svjs": "git@github.com:benjiec/svjs.git#master"
+  }
+}
