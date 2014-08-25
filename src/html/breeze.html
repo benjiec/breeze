@@ -1,8 +1,17 @@
 <form>
   <div class="form-inline">
     Enter sequence
-    <textarea id="query" class="sequence" ng-model="query"></textarea>
+    <textarea id="query" class="sequence" ng-model="query.sequence"></textarea>
     <button class="btn btn-primary" ng-click="makeQuery()">Blast</button>
+  </div>
+  <div class="form-inline">
+    Input:
+      <input type="radio" name="type" ng-model="query.input" value="dna" /> DNA
+      <input type="radio" name="type" ng-model="query.input" value="protein" /> Protein
+    Databases:
+    <span ng-repeat="(db, url) in databases">
+      <input type="radio" name="database" ng-model="query.db" value="{{ db }}" /> {{ db }}
+    </span>
   </div>
 </form>
 

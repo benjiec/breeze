@@ -1,1 +1,26 @@
-There are no results
+<p ng-if="submitted === true && results === null">
+  Searching ...
+</p>
+
+<div ng-if="results !== null">
+
+<p>
+  {{ results.length }} matches from your search.
+</p>
+
+<div ng-repeat="result in results">
+  <p> {{ result.label }}: {{ result.name }} </p>
+  <ul>
+    <li> query start: {{ result.start }} </li>
+    <li> query end: {{ result.end }} </li>
+    <li> subject start: {{ result.start }} </li>
+    <li> subject end: {{ result.end }} </li>
+    <li> e-value: {{ result.evalue }} </li>
+    <li> identities: {{ result.identities }}/{{ result.alignment.match.length }} </li>
+  </ul>
+
+</div>
+
+
+</div>
+
