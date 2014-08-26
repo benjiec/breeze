@@ -99,8 +99,9 @@ function BreezeController($scope, $http) {
   function processResults(fetch_obj_f, results) {
     var data = {};
     $scope.results = _.map(results, function(res) {
+      checkDegen(res);
       var d = {
-        res: checkDegen(res),
+        res: res,
         alignment: BreezeAlignment(res.query_start, res.query_end, res.subject_start, res.subject_end,
                                    res.alignment.query, res.alignment.match, res.alignment.subject),
         obj: null
@@ -121,13 +122,14 @@ function BreezeController($scope, $http) {
   }
 
   function checkDegen(res) {
-    var query = res.alignment.query;
+    var query = res.alignment.query.toUpperCase();
+    var subject = res.alignment.subject.toUpperCase();
     var curr = null;
     var comp = null;
     for (var i = 0; i < query.length; i++) {
       curr = query.charAt(i);
       if (curr == 'A' || curr == 'C' || curr == 'G' || curr == 'T') continue;
-      comp = res.alignment.subject.charAt(i);
+      comp = subject.charAt(i);
       if ((curr == 'W' && (comp == 'A' || comp == 'T')) ||
           (curr == 'S' && (comp == 'C' || comp == 'G')) ||
           (curr == 'M' && (comp == 'A' || comp == 'C')) ||
@@ -144,7 +146,6 @@ function BreezeController($scope, $http) {
         res.alignment.match = orig.substr(0, i) + '|' + orig.substr(i+1);
       }
     }
-    return res;
   }
 
   $scope.makeQuery = function() {
