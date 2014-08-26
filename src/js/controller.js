@@ -23,30 +23,13 @@ function BreezeController($scope, $http) {
   $scope.results = null;
 
   function processResults(fetch_obj_f, results) {
-    var i = 0;
-    jQuery('.sv-container').remove();
-
     var data = {};
-
     $scope.results = _.map(results, function(res) {
-      i++;
-      var svid = "sv-container-"+i;
-
-      function addSv() {
-        var el = jQuery("#"+svid).addClass('sv-container');
-        el.empty();
-        var sv = window.SequenceViewer(jQuery, el);
-        sv.setSequenceWithAnnotations($scope.query.sequence, [], 1);
-      }
-
       var d = {
         res: res,
-        svId: svid,
-        addSv: addSv,
         obj: null
       };
       data[res.label] = d;
-
       return d;
     });
 

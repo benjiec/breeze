@@ -23,8 +23,9 @@
     <li> match: {{ result.res.subject_start }} - {{ result.res.subject_end }} </li>
   </ul>
 
-  <div id="{{ result.svId }}"></div>
-  {{ result.addSv() }}
+  {{ result.res.alignment.query }}
+  {{ result.res.alignment.match }}
+  {{ result.res.alignment.subject }}
 
 </div>
 
