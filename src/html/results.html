@@ -10,7 +10,7 @@
   </p>
 
   <div ng-repeat="result in results">
-    <div ng-if="query.to_show === undefined || query.to_show === null || query.to_show === $index">
+    <div ng-if="controls.to_show === undefined || controls.to_show === null || controls.to_show === $index">
     <p>
         {{ result.res.accession }}:
         <span ng-if="result.obj">
@@ -21,8 +21,7 @@
         <br/>
         <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
         <div ng-if="result.identical_matches.length > 0">
-          <br/>
-          Also matches:
+          Also matches at least {{ result.identical_matches.length }} related entries:
           <partial template="identical"></partial>
         </div>
     </p>
@@ -34,17 +33,19 @@
 
 <div class="pull-left" id="results-summary">
   <ul>
-    <li> <a href="javascript:void(0);" ng-click="query.to_show=null">Show all</a> </li>
+    <li> <a href="javascript:void(0);" ng-click="controls.to_show=null">Show all</a> </li>
     <li ng-repeat="result in results">
-      <a href="javascript:void(0);" ng-click="query.to_show=$index">{{ result.res.accession }}</a>
+      <a href="javascript:void(0);" ng-click="controls.to_show=$index">{{ result.res.accession }}</a>
       {{ result.res.evalue }}.
       {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
-      same: {{ result.identical_matches.length }}.
       <a href="{{ result.obj.url }}"
        >{{ result.obj.name.length <= 20 ? result.obj.name : result.obj.name.substr(0, 20)+'...' }}</a>.
+      <span ng-if="result.identical_matches.length > 0" class="related-desc">
+        <br/>
+        ... and {{ result.identical_matches.length }} related entries
+      </span>
     </li>
   </ul>
 </div>
 
 </div>
-

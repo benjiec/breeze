@@ -18,11 +18,11 @@ window.BreezeConfig = function() {
 
 function BreezeController($scope, $http) {
   $scope.query = { sequence: null, db: null, input: 'dna',
-                   identity_threshold: 0.5, feature_threshold: 0.0,
-                   to_show: null };
+                   identity_threshold: 0.5, feature_threshold: 0.0 };
   $scope.submitted = false;
   $scope.databases = window.BreezeConfig._databases;
   $scope.results = null;
+  $scope.controls = {to_show: null };
 
   function processResults(fetch_obj_f, results) {
     var tot_children = 0;
@@ -143,6 +143,7 @@ function BreezeController($scope, $http) {
 
     $scope.submitted = true;
     $scope.results = null;
+    $scope.controls.to_show = null;
 
     $http({
       method: 'POST',
