@@ -98,6 +98,7 @@ function BreezeController($scope, $http) {
 
   function processResults(fetch_obj_f, results) {
     var data = {};
+    console.log(results);
     $scope.results = _.map(results, function(res) {
       checkDegen(res);
       var d = {
@@ -144,6 +145,7 @@ function BreezeController($scope, $http) {
         
         var orig = res.alignment.match;
         res.alignment.match = orig.substr(0, i) + '|' + orig.substr(i+1);
+        res.identities++;
       }
     }
   }
