@@ -3,9 +3,6 @@ window.BreezeAlignment = function(query_start, query_end, subject_start, subject
     var both = match_str.replace(/ /g, "x");
     return both.replace(/\|/g, " ");
   }
-  function sanitizeForHTML(str) {
-    return str.replace(/ /g, "&nbsp;");
-  }
 
   var mismatch = getMisMatch(match);
 
@@ -29,7 +26,7 @@ window.BreezeAlignment = function(query_start, query_end, subject_start, subject
       s.push(tr);
       //mismatch
       var tr = '<tr class="alignment-mismatch"><td class="alignment-pos alignment-pos-left">';
-      tr += '</td><td>'+sanitizeForHTML(mismatch_rows[i])+'</td><td class="alignment-pos alignment-pos-right">';
+      tr += '</td><td>'+mismatch_rows[i]+'</td><td class="alignment-pos alignment-pos-right">';
       tr += '</td></tr>';
       s.push(tr);
       // subject

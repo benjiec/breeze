@@ -2,7 +2,8 @@
 #query { width:400px; height:200px; }
 .alignment-container { margin: 15px; }
 
-table.alignment { font-size:0.8em; }
+table.alignment { font-size:0.8em; white-space:pre; }
 .alignment-subject td { padding-bottom: 5px; }
 .alignment-pos-left { text-align: right; }
 .alignment-pos-right { text-align: left; }
+.alignment-mismatch { color: red; font-weight: bold; }
