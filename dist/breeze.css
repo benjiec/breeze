@@ -1,2 +1,7 @@
 .sequence { font-family: courier; }
 #query { width:400px; height:200px; }
+
+table.alignment { font-size:0.8em; }
+.alignment-subject td { padding-bottom: 5px; }
+.alignment-pos-left { text-align: right; }
+.alignment-pos-right { text-align: left; }

@@ -24,9 +24,13 @@ function BreezeController($scope, $http) {
 
   function processResults(fetch_obj_f, results) {
     var data = {};
+
+    console.log(results);
     $scope.results = _.map(results, function(res) {
       var d = {
         res: res,
+        alignment: BreezeAlignment(res.start, res.end, res.subject_start, res.subject_end,
+                                   res.alignment.query, res.alignment.match, res.alignment.subject),
         obj: null
       };
       data[res.label] = d;
