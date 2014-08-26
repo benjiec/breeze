@@ -45,7 +45,7 @@ function BreezeController($scope, $http) {
       var accessions = _.keys(data);
       fetch_obj_f($http, accessions, function(objs) {
         // expects a hash mapping accession to object. each object has name,
-        // length, link, children attributes. children should contain list of
+        // link, children attributes. children should contain list of
         // ids matching same format as res.accession.
         _.map(_.keys(objs), function(k) { data[k].obj = objs[k]; });
         
