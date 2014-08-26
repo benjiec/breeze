@@ -31,7 +31,7 @@
       <a href="{{ result.obj.url }}">{{ result.res.accession }}</a>
       e: {{ result.res.evalue }}.
       i: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
-      {{ result.obj.name.substr(0, 20)+'...' }}.
+      {{ result.obj.name.length <= 20 ? result.obj.name : result.obj.name.substr(0, 20)+'...' }}.
     </li>
   </ul>
 </div>

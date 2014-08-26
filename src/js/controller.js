@@ -67,11 +67,13 @@ function BreezeController($scope, $http) {
           (curr == 'D' && (comp == 'A' || comp == 'G' || comp == 'T')) ||
           (curr == 'H' && (comp == 'A' || comp == 'C' || comp == 'T')) ||
           (curr == 'V' && (comp == 'A' || comp == 'C' || comp == 'G')) ||
-          (curr == 'N')) {
-        
+          (curr == 'N' && (comp == 'A' || comp == 'C' || comp == 'G' || comp == 'T'))) {
         var orig = res.alignment.match;
-        res.alignment.match = orig.substr(0, i) + '|' + orig.substr(i+1);
-        res.identities++;
+        var orig_match = orig.charAt(i);
+        if (orig_match !== '|') {
+          res.alignment.match = orig.substr(0, i) + '|' + orig.substr(i+1);
+          res.identities++;
+        }
       }
     }
   }
