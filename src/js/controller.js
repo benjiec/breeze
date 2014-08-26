@@ -25,8 +25,6 @@ function BreezeController($scope, $http) {
   $scope.controls = {to_show: null };
 
   function processResults(fetch_obj_f, results) {
-    var tot_children = 0;
-    var matched_children = 0;
     var data = {};
 
     _.map(results, function(res) {
@@ -49,20 +47,11 @@ function BreezeController($scope, $http) {
         // length, link, children attributes. children should contain list of
         // ids matching same format as res.accession.
         _.map(_.keys(objs), function(k) { data[k].obj = objs[k]; });
-        console.log(data);
-        console.log("Before pruning:");
-        console.log(Object.keys(data).length);
+        
         for (var key in data) {
           if (data.hasOwnProperty(key)) collapseChildren(key);
         }
-        console.log("After pruning:");
-        console.log(Object.keys(data).length);
-        console.log("Total children:");
-        console.log(tot_children);
-        console.log("Matched children:");
-        console.log(matched_children);
-        console.log(data);
-
+        
         $scope.results = _.map(_.keys(data), function(k) { return data[k]; });
       });
     }
@@ -70,15 +59,18 @@ function BreezeController($scope, $http) {
     function collapseChildren(acc) {
       if (data[acc].obj == null) return;
       var subject = data[acc].res.alignment.subject.toLowerCase();
+      var query_start = data[acc].res.query_start;
       var children = data[acc].obj.children;
       var identical_matches = [];
       var child_subject = null;
+      var child_query_start = null;
+
       for (var i = 0; i < children.length; i++) {
-        tot_children++;
         if (!data.hasOwnProperty(children[i])) continue;
         child_subject = data[children[i]].res.alignment.subject.toLowerCase();
-        if (subject == child_subject) {
-          matched_children++;
+        child_query_start = data[children[i]].res.query_start;
+
+        if (subject == child_subject && query_start == child_query_start) {
           collapseChildren(children[i]);
           identical_matches[identical_matches.length] = data[children[i]];
           delete data[children[i]];
