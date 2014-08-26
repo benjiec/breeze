@@ -9,7 +9,7 @@
 </p>
 
 <div ng-repeat="result in results">
-  <p> {{ result.res.label }}:
+  <p> {{ result.res.accession }}:
       <span ng-if="result.obj">
         <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
         ({{ result.obj.length }} bps).

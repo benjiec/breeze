@@ -95,20 +95,20 @@ function BreezeController($scope, $http) {
     $scope.results = _.map(results, function(res) {
       var d = {
         res: res,
-        alignment: BreezeAlignment(res.start, res.end, res.subject_start, res.subject_end,
+        alignment: BreezeAlignment(res.query_start, res.query_end, res.subject_start, res.subject_end,
                                    res.alignment.query, res.alignment.match, res.alignment.subject),
         obj: null
       };
-      data[res.label] = d;
+      data[res.accession] = d;
       return d;
     });
 
     if (fetch_obj_f !== undefined) {
-      var labels = _.keys(data);
-      fetch_obj_f($http, labels, function(objs) {
-        // expects a hash mapping label to object. each object has name,
-        // length, link, children attributes.  children should contain list of
-        // ids matching same format as res.label.
+      var accessions = _.keys(data);
+      fetch_obj_f($http, accessions, function(objs) {
+        // expects a hash mapping accession to object. each object has name,
+        // length, link, children attributes. children should contain list of
+        // ids matching same format as res.accession.
         _.map(_.keys(objs), function(k) { data[k].obj = objs[k]; });
       });
     }
