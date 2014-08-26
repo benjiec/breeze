@@ -18,12 +18,7 @@
       identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
   </p>
 
-  <ul>
-    <li> query: {{ result.res.start }} - {{ result.res.end }} </li>
-    <li> match: {{ result.res.subject_start }} - {{ result.res.subject_end }} </li>
-  </ul>
-
-  <div ng-bind-html="result.alignment.wrapped_html()"></div>
+  <div class="alignment-container" ng-bind-html="result.alignment.wrapped_html()"></div>
 </div>
 
 
