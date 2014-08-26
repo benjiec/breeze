@@ -2,5 +2,4 @@
 .*.swp
 .webassets-cache
 lib
-dist
 ginkgo.html
