@@ -11,21 +11,18 @@
 
   <div ng-repeat="result in results">
     <div ng-if="controls.to_show === undefined || controls.to_show === null || controls.to_show === $index">
-    <p>
+      <p>
         {{ result.res.accession }}:
-        <span ng-if="result.obj">
-          ({{ result.obj.length }} bps).
-        </span>
         e-value: {{ result.res.evalue }}.
         identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
         <br/>
         <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
-        <div ng-if="result.identical_matches.length > 0">
-          Also matches at least {{ result.identical_matches.length }} related entries:
-          <partial template="identical"></partial>
-        </div>
-    </p>
-    <div class="alignment-container" ng-bind-html="result.alignment.wrapped_html()"></div>
+      </p>
+      <div class="alignment-container" ng-bind-html="result.alignment.wrapped_html()"></div>
+      <div ng-if="result.identical_matches.length > 0" class="related-desc">
+        Also matches at least {{ result.identical_matches.length }} related entries:
+        <partial template="identical"></partial>
+      </div>
     </div>
   </div>
 
