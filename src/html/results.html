@@ -29,9 +29,9 @@
   <ul>
     <li ng-repeat="result in results">
       <a href="{{ result.obj.url }}">{{ result.res.accession }}</a>
-      e-value: {{ result.res.evalue }}.
-      identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
-      name: {{ result.obj.name.substr(0, 20)+'...' }}.
+      e: {{ result.res.evalue }}.
+      i: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
+      {{ result.obj.name.substr(0, 20)+'...' }}.
     </li>
   </ul>
 </div>
