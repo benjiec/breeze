@@ -10,7 +10,9 @@
   </p>
 
   <div ng-repeat="result in results">
-    <p> <a name="#result-{{$index}}">{{ result.res.accession }}:</a>
+    <div ng-if="query.to_show === undefined || query.to_show === null || query.to_show === $index">
+    <p>
+        {{ result.res.accession }}:
         <span ng-if="result.obj">
           ({{ result.obj.length }} bps).
         </span>
@@ -19,19 +21,21 @@
         <br/>
         <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
     </p>
-
     <div class="alignment-container" ng-bind-html="result.alignment.wrapped_html()"></div>
+    </div>
   </div>
 
 </div>
 
 <div class="pull-left" id="results-summary">
   <ul>
+    <li> <a href="javascript:void(0);" ng-click="query.to_show=null">Show all</a> </li>
     <li ng-repeat="result in results">
-      <a href="{{ result.obj.url }}">{{ result.res.accession }}</a>
+      <a href="javascript:void(0);" ng-click="query.to_show=$index">{{ result.res.accession }}</a>
       e: {{ result.res.evalue }}.
       i: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
-      {{ result.obj.name.length <= 20 ? result.obj.name : result.obj.name.substr(0, 20)+'...' }}.
+      <a href="{{ result.obj.url }}"
+       >{{ result.obj.name.length <= 20 ? result.obj.name : result.obj.name.substr(0, 20)+'...' }}</a>.
     </li>
   </ul>
 </div>

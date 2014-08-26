@@ -17,7 +17,9 @@ window.BreezeConfig = function() {
 }();
 
 function BreezeController($scope, $http) {
-  $scope.query = { sequence: null, db: null, input: 'dna', identity_threshold: 0.5, feature_threshold: 0.0 };
+  $scope.query = { sequence: null, db: null, input: 'dna',
+                   identity_threshold: 0.5, feature_threshold: 0.0,
+                   to_show: null };
   $scope.submitted = false;
   $scope.databases = window.BreezeConfig._databases;
   $scope.results = null;
