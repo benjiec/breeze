@@ -1,6 +1,6 @@
 window.BreezeAlignment = function(query_start, query_end, subject_start, subject_end, query, match, subject) {
   function getMisMatch(match_str) {
-    var both = match_str.replace(/ /g, "x");
+    var both = match_str.replace(/ /g, "X");
     return both.replace(/\|/g, " ");
   }
 
