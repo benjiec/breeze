@@ -12,11 +12,12 @@
   <div ng-repeat="result in results">
     <p> <a name="#result-{{$index}}">{{ result.res.accession }}:</a>
         <span ng-if="result.obj">
-          <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
           ({{ result.obj.length }} bps).
         </span>
         e-value: {{ result.res.evalue }}.
         identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
+        <br/>
+        <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
     </p>
 
     <div class="alignment-container" ng-bind-html="result.alignment.wrapped_html()"></div>
@@ -27,10 +28,10 @@
 <div class="pull-left" id="results-summary">
   <ul>
     <li ng-repeat="result in results">
-      <a href="{{ result.obj.url }}">{{ result.res.accession }}</a> -
-      e-value: {{ result.res.evalue }},
-      identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }},
-      name: {{ result.obj.name }}.
+      <a href="{{ result.obj.url }}">{{ result.res.accession }}</a>
+      e-value: {{ result.res.evalue }}.
+      identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
+      name: {{ result.obj.name.substr(0, 20)+'...' }}.
     </li>
   </ul>
 </div>
