@@ -103,7 +103,7 @@ function BreezeController($scope, $http) {
       return d;
     });
 
-    if (fetch_obj_f !== undefined) {
+    if (fetch_obj_f !== undefined && _.keys(data).length > 0) {
       var accessions = _.keys(data);
       fetch_obj_f($http, accessions, function(objs) {
         // expects a hash mapping accession to object. each object has name,
@@ -127,6 +127,7 @@ function BreezeController($scope, $http) {
     var fetch_obj_f = p.fetch_object_function;
 
     params['input'] = $scope.query.input;
+    params['blastonly'] = 1;
     params['identity_threshold'] = 0.5;
     params['feature_threshold'] = 0.1;
     params['circular'] = 0;
@@ -149,7 +150,7 @@ function BreezeController($scope, $http) {
       processResults(fetch_obj_f, data[1]);
     }).error(function(data, status, headers, config) {
       $scope.submitted = false;
-      alert('Cannot blast, received error');
+      alert('Cannot blast, blast server did not like your query');
     });
   };
 }
