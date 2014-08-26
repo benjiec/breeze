@@ -26,7 +26,7 @@ function BreezeController($scope, $http) {
     var data = {};
     $scope.results = _.map(results, function(res) {
       var d = {
-        res: res,
+        res: checkDegen(res),
         alignment: BreezeAlignment(res.query_start, res.query_end, res.subject_start, res.subject_end,
                                    res.alignment.query, res.alignment.match, res.alignment.subject),
         obj: null
@@ -44,6 +44,33 @@ function BreezeController($scope, $http) {
         _.map(_.keys(objs), function(k) { data[k].obj = objs[k]; });
       });
     }
+  }
+
+  function checkDegen(res) {
+    var query = res.alignment.query;
+    var curr = null;
+    var comp = null;
+    for (var i = 0; i < query.length; i++) {
+      curr = query.charAt(i);
+      if (curr == 'A' || curr == 'C' || curr == 'G' || curr == 'T') continue;
+      comp = res.alignment.subject.charAt(i);
+      if ((curr == 'W' && (comp == 'A' || comp == 'T')) ||
+          (curr == 'S' && (comp == 'C' || comp == 'G')) ||
+          (curr == 'M' && (comp == 'A' || comp == 'C')) ||
+          (curr == 'K' && (comp == 'G' || comp == 'T')) ||
+          (curr == 'R' && (comp == 'A' || comp == 'G')) ||
+          (curr == 'Y' && (comp == 'C' || comp == 'T')) ||
+          (curr == 'B' && (comp == 'C' || comp == 'G' || comp == 'T')) ||
+          (curr == 'D' && (comp == 'A' || comp == 'G' || comp == 'T')) ||
+          (curr == 'H' && (comp == 'A' || comp == 'C' || comp == 'T')) ||
+          (curr == 'V' && (comp == 'A' || comp == 'C' || comp == 'G')) ||
+          (curr == 'N')) {
+        
+        var orig = res.alignment.match;
+        res.alignment.match = orig.substr(0, i) + '|' + orig.substr(i+1);
+      }
+    }
+    return res;
   }
 
   $scope.makeQuery = function() {

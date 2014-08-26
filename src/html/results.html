@@ -4,23 +4,36 @@
 
 <div ng-if="results !== null">
 
-<p>
-  {{ results.length }} matches from your search.
-</p>
-
-<div ng-repeat="result in results">
-  <p> {{ result.res.accession }}:
-      <span ng-if="result.obj">
-        <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
-        ({{ result.obj.length }} bps).
-      </span>
-      e-value: {{ result.res.evalue }}.
-      identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
+<div class="pull-left" id="results-list">
+  <p>
+    {{ results.length }} matches from your search.
   </p>
 
-  <div class="alignment-container" ng-bind-html="result.alignment.wrapped_html()"></div>
+  <div ng-repeat="result in results">
+    <p> <a name="#result-{{$index}}">{{ result.res.accession }}:</a>
+        <span ng-if="result.obj">
+          <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
+          ({{ result.obj.length }} bps).
+        </span>
+        e-value: {{ result.res.evalue }}.
+        identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
+    </p>
+
+    <div class="alignment-container" ng-bind-html="result.alignment.wrapped_html()"></div>
+  </div>
+
 </div>
 
+<div class="pull-left" id="results-summary">
+  <ul>
+    <li ng-repeat="result in results">
+      <a href="{{ result.obj.url }}">{{ result.res.accession }}</a> -
+      e-value: {{ result.res.evalue }},
+      identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }},
+      name: {{ result.obj.name }}.
+    </li>
+  </ul>
+</div>
 
 </div>
 
