@@ -28,7 +28,8 @@ function BreezeController($scope, $http) {
     var tot_children = 0;
     var matched_children = 0;
     var data = {};
-    $scope.results = _.map(results, function(res) {
+
+    _.map(results, function(res) {
       checkDegen(res);
       var d = {
         res: res,
@@ -40,6 +41,7 @@ function BreezeController($scope, $http) {
       data[res.accession] = d;
       return d;
     });
+
     if (fetch_obj_f !== undefined && _.keys(data).length > 0) {
       var accessions = _.keys(data);
       fetch_obj_f($http, accessions, function(objs) {
@@ -59,7 +61,9 @@ function BreezeController($scope, $http) {
         console.log(tot_children);
         console.log("Matched children:");
         console.log(matched_children);
+        console.log(data);
 
+        $scope.results = _.map(_.keys(data), function(k) { return data[k]; });
       });
     }
 

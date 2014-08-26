@@ -1,0 +1,10 @@
+<ul>
+  <li ng-repeat="res in result.identical_matches">
+    {{ res.res.accession }} <a href="{{ res.obj.url }}">{{ res.obj.name }}</a>
+    <div ng-init="result=res">
+      <div ng-if="result.identical_matches.length > 0">
+        <partial template="identical"></partial>
+      </div>
+    </div>
+  </li>
+</ul>

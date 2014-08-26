@@ -20,6 +20,11 @@
         identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
         <br/>
         <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
+        <div ng-if="result.identical_matches.length > 0">
+          <br/>
+          Also matches:
+          <partial template="identical"></partial>
+        </div>
     </p>
     <div class="alignment-container" ng-bind-html="result.alignment.wrapped_html()"></div>
     </div>
@@ -32,8 +37,9 @@
     <li> <a href="javascript:void(0);" ng-click="query.to_show=null">Show all</a> </li>
     <li ng-repeat="result in results">
       <a href="javascript:void(0);" ng-click="query.to_show=$index">{{ result.res.accession }}</a>
-      e: {{ result.res.evalue }}.
-      i: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
+      {{ result.res.evalue }}.
+      {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
+      same: {{ result.identical_matches.length }}.
       <a href="{{ result.obj.url }}"
        >{{ result.obj.name.length <= 20 ? result.obj.name : result.obj.name.substr(0, 20)+'...' }}</a>.
     </li>
