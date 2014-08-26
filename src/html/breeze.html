@@ -5,14 +5,25 @@
     <button class="btn btn-primary" ng-click="makeQuery()">Blast</button>
   </div>
   <div class="form-inline">
-    Input:
-      <input type="radio" name="type" ng-model="query.input" value="dna" /> DNA
-      <input type="radio" name="type" ng-model="query.input" value="protein" /> Protein
     Databases:
     <span ng-repeat="(db, url) in databases">
       <input type="radio" name="database" ng-model="query.db" value="{{ db }}" /> {{ db }}
     </span>
   </div>
+  <div class="form-inline">
+    Input:
+      <input type="radio" name="type" ng-model="query.input" value="dna" ng-checked="query.input === 'dna'" /> DNA
+      <input type="radio" name="type" ng-model="query.input" value="protein" /> Protein
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    <a href="javascript:void(0);" title="Minimum hits to alignment length ratio">Identity min:</a>
+      <input type="number" step="any" ng-model="query.identity_threshold" size="3" />
+    <a href="javascript:void(0);" title="Minimum alignment to subject length ratio">Feature ratio:</a>
+      <input type="number" step="any" ng-model="query.feature_threshold" size="3" />
+  </div>
 </form>
 
-<partial template="results"></partial>
+<div id="results">
+  <partial template="results"></partial>
+</div>

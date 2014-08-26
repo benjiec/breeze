@@ -17,7 +17,7 @@ window.BreezeConfig = function() {
 }();
 
 function BreezeController($scope, $http) {
-  $scope.query = { sequence: null, db: null, input: null };
+  $scope.query = { sequence: null, db: null, input: 'dna', identity_threshold: 0.5, feature_threshold: 0.0 };
   $scope.submitted = false;
   $scope.databases = window.BreezeConfig._databases;
   $scope.results = null;
@@ -60,8 +60,8 @@ function BreezeController($scope, $http) {
 
     params['input'] = $scope.query.input;
     params['blastonly'] = 1;
-    params['identity_threshold'] = 0.5;
-    params['feature_threshold'] = 0.1;
+    params['identity_threshold'] = $scope.query.identity_threshold;
+    params['feature_threshold'] = $scope.query.feature_threshold;
     params['circular'] = 0;
     params['sequence'] = $scope.query.sequence;
 
