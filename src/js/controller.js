@@ -25,20 +25,21 @@ function BreezeController($scope, $http) {
   $scope.results = null;
 
   function processResults(fetch_obj_f, results) {
+    var tot_children = 0;
+    var matched_children = 0;
     var data = {};
-    console.log(results);
     $scope.results = _.map(results, function(res) {
       checkDegen(res);
       var d = {
         res: res,
         alignment: BreezeAlignment(res.query_start, res.query_end, res.subject_start, res.subject_end,
                                    res.alignment.query, res.alignment.match, res.alignment.subject),
+        identical_matches: null,
         obj: null
       };
       data[res.accession] = d;
       return d;
     });
-
     if (fetch_obj_f !== undefined && _.keys(data).length > 0) {
       var accessions = _.keys(data);
       fetch_obj_f($http, accessions, function(objs) {
@@ -46,7 +47,40 @@ function BreezeController($scope, $http) {
         // length, link, children attributes. children should contain list of
         // ids matching same format as res.accession.
         _.map(_.keys(objs), function(k) { data[k].obj = objs[k]; });
+        console.log(data);
+        console.log("Before pruning:");
+        console.log(Object.keys(data).length);
+        for (var key in data) {
+          if (data.hasOwnProperty(key)) collapseChildren(key);
+        }
+        console.log("After pruning:");
+        console.log(Object.keys(data).length);
+        console.log("Total children:");
+        console.log(tot_children);
+        console.log("Matched children:");
+        console.log(matched_children);
+
       });
+    }
+
+    function collapseChildren(acc) {
+      if (data[acc].obj == null) return;
+      var subject = data[acc].res.alignment.subject.toLowerCase();
+      var children = data[acc].obj.children;
+      var identical_matches = [];
+      var child_subject = null;
+      for (var i = 0; i < children.length; i++) {
+        tot_children++;
+        if (!data.hasOwnProperty(children[i])) continue;
+        child_subject = data[children[i]].res.alignment.subject.toLowerCase();
+        if (subject == child_subject) {
+          matched_children++;
+          collapseChildren(children[i]);
+          identical_matches[identical_matches.length] = data[children[i]];
+          delete data[children[i]];
+        }
+      }
+      data[acc].identical_matches = identical_matches;
     }
   }
 
