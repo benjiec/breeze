@@ -24,8 +24,6 @@ function BreezeController($scope, $http) {
 
   function processResults(fetch_obj_f, results) {
     var data = {};
-
-    console.log(results);
     $scope.results = _.map(results, function(res) {
       var d = {
         res: res,

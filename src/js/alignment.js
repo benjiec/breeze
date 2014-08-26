@@ -1,10 +1,20 @@
 window.BreezeAlignment = function(query_start, query_end, subject_start, subject_end, query, match, subject) {
+  function getMisMatch(match_str) {
+    var both = match_str.replace(/ /g, "x");
+    return both.replace(/\|/g, " ");
+  }
+  function sanitizeForHTML(str) {
+    return str.replace(/ /g, "&nbsp;");
+  }
+
+  var mismatch = getMisMatch(match);
+
   function wrapped_html(rowlen) {
     if (rowlen === undefined) { rowlen = 80; }
 
     var rsplit = new RegExp('(.{1,'+rowlen+'})', 'g');
     var query_rows = query.match(rsplit);
-    var match_rows = match.match(rsplit);
+    var mismatch_rows = mismatch.match(rsplit);
     var subject_rows = subject.match(rsplit);
 
     var s = [];
@@ -17,9 +27,9 @@ window.BreezeAlignment = function(query_start, query_end, subject_start, subject
       if (i == query_rows.length-1) { tr += ''+query_end; }
       tr += '</td></tr>';
       s.push(tr);
-      // match
-      var tr = '<tr class="alignment-match"><td class="alignment-pos alignment-pos-left">';
-      tr += '</td><td>'+query_rows[i]+'</td><td class="alignment-pos alignment-pos-right">';
+      //mismatch
+      var tr = '<tr class="alignment-mismatch"><td class="alignment-pos alignment-pos-left">';
+      tr += '</td><td>'+sanitizeForHTML(mismatch_rows[i])+'</td><td class="alignment-pos alignment-pos-right">';
       tr += '</td></tr>';
       s.push(tr);
       // subject
@@ -38,6 +48,7 @@ window.BreezeAlignment = function(query_start, query_end, subject_start, subject
     wrapped_html: wrapped_html,
     query: query.slice(0),
     match: match.slice(0),
+    mismatch: mismatch.slice(0),
     subject: subject.slice(0)
   };
 };

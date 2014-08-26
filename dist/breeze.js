@@ -1,69 +1,3 @@
-window.BreezeAlignment = function(query_start, query_end, subject_start, subject_end, query, match, subject) {
-  function wrapped_html(rowlen) {
-    if (rowlen === undefined) { rowlen = 80; }
-
-    var rsplit = new RegExp('(.{1,'+rowlen+'})', 'g');
-    var query_rows = query.match(rsplit);
-    var match_rows = match.match(rsplit);
-    var subject_rows = subject.match(rsplit);
-
-    var s = [];
-    s.push('<table class="sequence alignment">');
-    for (var i=0; i<query_rows.length; i++) {
-      // query
-      var tr = '<tr class="alignment-query"><td class="alignment-pos alignment-pos-left">';
-      if (i == 0) { tr += ''+query_start; }
-      tr += '</td><td>'+query_rows[i]+'</td><td class="alignment-pos alignment-pos-right">';
-      if (i == query_rows.length-1) { tr += ''+query_end; }
-      tr += '</td></tr>';
-      s.push(tr);
-      // match
-      var tr = '<tr class="alignment-match"><td class="alignment-pos alignment-pos-left">';
-      tr += '</td><td>'+query_rows[i]+'</td><td class="alignment-pos alignment-pos-right">';
-      tr += '</td></tr>';
-      s.push(tr);
-      // subject
-      var tr = '<tr class="alignment-subject"><td class="alignment-pos alignment-pos-left">';
-      if (i == 0) { tr += ''+subject_start }
-      tr += '</td><td>'+subject_rows[i]+'</td><td class="alignment-pos alignment-pos-right">';
-      if (i == subject_rows.length-1) { tr += ''+subject_end; }
-      tr += '</td></tr>';
-      s.push(tr);
-    }
-    s.push('</table>');
-    return s.join('\n');
-  }
-
-  return {
-    wrapped_html: wrapped_html,
-    query: query.slice(0),
-    match: match.slice(0),
-    subject: subject.slice(0)
-  };
-};
-
-var app = angular.module('breeze', ['ngRoute', 'ngSanitize'])
-  .config(['$routeProvider', function($routeProvider) {
-    $routeProvider
-      .when('/',
-            { template: JST['breeze'], controller: BreezeController})
-      .otherwise({redirectTo: '/breeze'});
-  }]);
-
-app.directive('partial', function($compile) {
-  var linker = function(scope, element, attrs) {
-    element.html(JST[attrs.template]());
-    $compile(element.contents())(scope);
-  };
-  return {
-    link: linker,
-    restrict: 'E'
-  }
-});
-
-app.filter('encodeURIComponent', function() { return window.encodeURIComponent; });
-app.filter('encodeURI', function() { return window.encodeURI; });
-
 'use strict';
 
 window.BreezeConfig = function() {
@@ -90,8 +24,6 @@ function BreezeController($scope, $http) {
 
   function processResults(fetch_obj_f, results) {
     var data = {};
-
-    console.log(results);
     $scope.results = _.map(results, function(res) {
       var d = {
         res: res,
@@ -153,3 +85,80 @@ function BreezeController($scope, $http) {
     });
   };
 }
+
+var app = angular.module('breeze', ['ngRoute', 'ngSanitize'])
+  .config(['$routeProvider', function($routeProvider) {
+    $routeProvider
+      .when('/',
+            { template: JST['breeze'], controller: BreezeController})
+      .otherwise({redirectTo: '/breeze'});
+  }]);
+
+app.directive('partial', function($compile) {
+  var linker = function(scope, element, attrs) {
+    element.html(JST[attrs.template]());
+    $compile(element.contents())(scope);
+  };
+  return {
+    link: linker,
+    restrict: 'E'
+  }
+});
+
+app.filter('encodeURIComponent', function() { return window.encodeURIComponent; });
+app.filter('encodeURI', function() { return window.encodeURI; });
+
+window.BreezeAlignment = function(query_start, query_end, subject_start, subject_end, query, match, subject) {
+  function getMisMatch(match_str) {
+    var both = match_str.replace(/ /g, "x");
+    return both.replace(/\|/g, " ");
+  }
+  function sanitizeForHTML(str) {
+    return str.replace(/ /g, "&nbsp;");
+  }
+
+  var mismatch = getMisMatch(match);
+
+  function wrapped_html(rowlen) {
+    if (rowlen === undefined) { rowlen = 80; }
+
+    var rsplit = new RegExp('(.{1,'+rowlen+'})', 'g');
+    var query_rows = query.match(rsplit);
+    var mismatch_rows = mismatch.match(rsplit);
+    var subject_rows = subject.match(rsplit);
+
+    var s = [];
+    s.push('<table class="sequence alignment">');
+    for (var i=0; i<query_rows.length; i++) {
+      // query
+      var tr = '<tr class="alignment-query"><td class="alignment-pos alignment-pos-left">';
+      if (i == 0) { tr += ''+query_start; }
+      tr += '</td><td>'+query_rows[i]+'</td><td class="alignment-pos alignment-pos-right">';
+      if (i == query_rows.length-1) { tr += ''+query_end; }
+      tr += '</td></tr>';
+      s.push(tr);
+      //mismatch
+      var tr = '<tr class="alignment-mismatch"><td class="alignment-pos alignment-pos-left">';
+      tr += '</td><td>'+sanitizeForHTML(mismatch_rows[i])+'</td><td class="alignment-pos alignment-pos-right">';
+      tr += '</td></tr>';
+      s.push(tr);
+      // subject
+      var tr = '<tr class="alignment-subject"><td class="alignment-pos alignment-pos-left">';
+      if (i == 0) { tr += ''+subject_start }
+      tr += '</td><td>'+subject_rows[i]+'</td><td class="alignment-pos alignment-pos-right">';
+      if (i == subject_rows.length-1) { tr += ''+subject_end; }
+      tr += '</td></tr>';
+      s.push(tr);
+    }
+    s.push('</table>');
+    return s.join('\n');
+  }
+
+  return {
+    wrapped_html: wrapped_html,
+    query: query.slice(0),
+    match: match.slice(0),
+    mismatch: mismatch.slice(0),
+    subject: subject.slice(0)
+  };
+};
