@@ -43,7 +43,6 @@ function BreezeController($scope, $http) {
         obj: null
       };
       data[res.accession] = d;
-      if (res.accession === 'm63188') { console.log(res.accession); }
       return d;
     });
 
