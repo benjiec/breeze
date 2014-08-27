@@ -1,6 +1,7 @@
 <ul>
   <li ng-repeat="res in result.identical_matches">
-    {{ res.res.accession }} <a href="{{ res.obj.url }}">{{ res.obj.name }}</a>
+    <a href="{{ res.obj.url }}">{{ res.res.accession }} {{ res.obj.name }}</a>:
+    {{ res.res.subject_start }}-{{ res.res.subject_end }}
     <div ng-init="result=res">
       <div ng-if="result.identical_matches.length > 0">
         <partial template="identical"></partial>

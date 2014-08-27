@@ -19,3 +19,9 @@ app.directive('partial', function($compile) {
 
 app.filter('encodeURIComponent', function() { return window.encodeURIComponent; });
 app.filter('encodeURI', function() { return window.encodeURI; });
+app.filter('trunc', function() {
+  return function(s, n) {
+    if (n === undefined) n = 20;
+    return s.length <= n ? s : s.substr(0, n)+'...';
+  };
+});

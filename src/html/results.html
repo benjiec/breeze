@@ -12,9 +12,11 @@
   <div ng-repeat="result in results">
     <div ng-if="controls.to_show === undefined || controls.to_show === null || controls.to_show === $index">
       <p>
-        {{ result.res.accession }}:
-        e-value: {{ result.res.evalue }}.
-        identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
+        <b>
+          {{ result.res.accession }}:
+          e-value: {{ result.res.evalue }}.
+          identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
+        </b>
         <br/>
         <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
       </p>
@@ -35,8 +37,7 @@
       <a href="javascript:void(0);" ng-click="controls.to_show=$index">{{ result.res.accession }}</a>
       {{ result.res.evalue }}.
       {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
-      <a href="{{ result.obj.url }}"
-       >{{ result.obj.name.length <= 20 ? result.obj.name : result.obj.name.substr(0, 20)+'...' }}</a>.
+      <a href="{{ result.obj.url }}">{{ result.obj.name|trunc:30 }}</a>
       <span ng-if="result.identical_matches.length > 0" class="related-desc">
         <br/>
         ... and {{ result.identical_matches.length }} related entries

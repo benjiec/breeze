@@ -53,7 +53,14 @@ function BreezeController($scope, $http) {
           if (data.hasOwnProperty(key)) collapseChildren(key);
         }
         
-        $scope.results = _.map(_.keys(data), function(k) { return data[k]; });
+        var r = _.map(_.keys(data), function(k) { return data[k]; });
+        r.sort(function(x, y) {
+          if (x.res.evalue !== y.res.evalue) {
+            return x.res.evalue > y.res.evalue ? 1 : -1;
+          }
+          return x.identical_matches.length > y.identical_matches.length ? -1 : 1;
+        });
+        $scope.results = r;
       });
     }
 
