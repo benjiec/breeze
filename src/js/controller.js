@@ -27,6 +27,11 @@ function BreezeController($scope, $http) {
   function processResults(fetch_obj_f, results) {
     var data = {};
 
+    if (results.length === 0) {
+      $scope.results = [];
+      return;
+    }
+
     _.map(results, function(res) {
       res.accession = res.label;
       checkDegen(res);
