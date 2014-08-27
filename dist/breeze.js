@@ -18,11 +18,11 @@ window.BreezeConfig = function() {
 
 function BreezeController($scope, $http) {
   $scope.query = { sequence: null, db: null, input: 'dna',
-                   identity_threshold: 0.5, feature_threshold: 0.0,
-                   to_show: null };
+                   identity_threshold: 0.5, feature_threshold: 0.0 };
   $scope.submitted = false;
   $scope.databases = window.BreezeConfig._databases;
   $scope.results = null;
+  $scope.controls = {to_show: null };
 
   function processResults(fetch_obj_f, results) {
     var data = {};
@@ -38,6 +38,7 @@ function BreezeController($scope, $http) {
         obj: null
       };
       data[res.accession] = d;
+      if (res.accession === 'm63188') { console.log(res.accession); }
       return d;
     });
 
@@ -45,7 +46,7 @@ function BreezeController($scope, $http) {
       var accessions = _.keys(data);
       fetch_obj_f($http, accessions, function(objs) {
         // expects a hash mapping accession to object. each object has name,
-        // length, link, children attributes. children should contain list of
+        // link, children attributes. children should contain list of
         // ids matching same format as res.accession.
         _.map(_.keys(objs), function(k) { data[k].obj = objs[k]; });
         
@@ -53,7 +54,14 @@ function BreezeController($scope, $http) {
           if (data.hasOwnProperty(key)) collapseChildren(key);
         }
         
-        $scope.results = _.map(_.keys(data), function(k) { return data[k]; });
+        var r = _.map(_.keys(data), function(k) { return data[k]; });
+        r.sort(function(x, y) {
+          if (x.res.evalue !== y.res.evalue) {
+            return x.res.evalue > y.res.evalue ? 1 : -1;
+          }
+          return x.identical_matches.length > y.identical_matches.length ? -1 : 1;
+        });
+        $scope.results = r;
       });
     }
 
@@ -136,6 +144,7 @@ function BreezeController($scope, $http) {
 
     $scope.submitted = true;
     $scope.results = null;
+    $scope.controls.to_show = null;
 
     $http({
       method: 'POST',
@@ -173,6 +182,12 @@ app.directive('partial', function($compile) {
 
 app.filter('encodeURIComponent', function() { return window.encodeURIComponent; });
 app.filter('encodeURI', function() { return window.encodeURI; });
+app.filter('trunc', function() {
+  return function(s, n) {
+    if (n === undefined) n = 20;
+    return s.length <= n ? s : s.substr(0, n)+'...';
+  };
+});
 
 window.BreezeAlignment = function(query_start, query_end, subject_start, subject_end, query, match, subject) {
   function getMisMatch(match_str) {
