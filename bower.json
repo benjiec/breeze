@@ -14,6 +14,6 @@
     "angular-route": "1.2.4",
     "angular-sanitize": "1.2.4",
     "underscore": "1.6.0",
-    "svjs": "http://github.com/benjiec/svjs.git#master"
+    "svjs": "https://github.com/benjiec/svjs.git#master"
   }
 }
