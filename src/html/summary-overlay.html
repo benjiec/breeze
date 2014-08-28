@@ -1,0 +1,12 @@
+<div class="label label-danger overlay" ng-repeat="result in results"
+     style="margin-left: {{((result.res.query_start-1)*100/query.sequence.length).toFixed(2)}}%;
+            width: {{((result.res.query_end-result.res.query_start+1)*100/query.sequence.length).toFixed(2)}}%; "
+     ng-click="controls.to_show=$index">
+  {{ (result.res.identities*100/result.res.alignment.match.length).toFixed(1) }}%
+  {{ result.res.accession }}
+  <span ng-if="result.identical_matches.length > 0">
+    ({{ result.identical_matches.length }} related)
+  </span>
+  {{ result.obj.name|trunc:30 }}
+</div>
+<div class="label label-primary overlay" style="margin-left: 0%; width: 100%">Query</div>

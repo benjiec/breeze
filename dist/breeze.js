@@ -22,6 +22,7 @@ function BreezeController($scope, $http) {
   $scope.submitted = false;
   $scope.databases = window.BreezeConfig._databases;
   $scope.results = null;
+  $scope.flat_results = null;
   $scope.controls = {to_show: null };
 
   function processResults(fetch_obj_f, results) {
@@ -32,7 +33,7 @@ function BreezeController($scope, $http) {
       return;
     }
 
-    _.map(results, function(res) {
+    $scope.flat_results = _.map(results, function(res) {
       res.accession = res.label;
       checkDegen(res);
       var d = {
@@ -71,19 +72,26 @@ function BreezeController($scope, $http) {
 
     function collapseChildren(acc) {
       if (data[acc].obj == null) return;
+      var match = data[acc].res.alignment.match.toLowerCase();
       var subject = data[acc].res.alignment.subject.toLowerCase();
       var query_start = data[acc].res.query_start;
+      var query_end = data[acc].res.query_end;
       var children = data[acc].obj.children;
       var identical_matches = [];
       var child_subject = null;
+      var child_match = null;
       var child_query_start = null;
+      var child_query_end = null;
 
       for (var i = 0; i < children.length; i++) {
         if (!data.hasOwnProperty(children[i])) continue;
+        child_match = data[children[i]].res.alignment.match.toLowerCase();
         child_subject = data[children[i]].res.alignment.subject.toLowerCase();
         child_query_start = data[children[i]].res.query_start;
+        child_query_end = data[children[i]].res.query_end;
 
-        if (subject == child_subject && query_start == child_query_start) {
+        if (subject === child_subject && match === child_match &&
+            query_start === child_query_start && query_end === child_query_end) {
           collapseChildren(children[i]);
           identical_matches[identical_matches.length] = data[children[i]];
           delete data[children[i]];
@@ -150,6 +158,7 @@ function BreezeController($scope, $http) {
 
     $scope.submitted = true;
     $scope.results = null;
+    $scope.flat_results = null;
     $scope.controls.to_show = null;
 
     $http({
@@ -164,6 +173,12 @@ function BreezeController($scope, $http) {
       $scope.submitted = false;
       alert('Cannot blast, blast server did not like your query');
     });
+  };
+
+  $scope.showSummary = function(n, tab) {
+    jQuery("#summary-tabs .nav-tabs li:eq("+n+") a").tab('show');
+    jQuery("#summary-tabs .tab-pane").removeClass('active');
+    jQuery("#summary-tabs #"+tab).addClass('active');
   };
 }
 

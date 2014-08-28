@@ -1,0 +1,24 @@
+<table class="table table-condensed table-bordered">
+  <tr class="success">
+    <th>Q (/{{ query.sequence.length }})</th> <th>E</th> <th>%</th> <th>Match</th>
+  </tr>
+  <tr ng-repeat="result in results">
+    <td>
+      {{ result.res.query_start }}-{{ result.res.query_end }}
+    </td>
+    <td>
+      {{ result.res.evalue }}
+    </td>
+    <td>
+      {{ (100*result.res.identities/result.res.alignment.match.length).toFixed(1) }}
+    </td>
+    <td>
+      <a href="javascript:void(0);" ng-click="controls.to_show=$index"
+       >{{ result.res.accession }} {{ result.obj.name|trunc:30 }}</a>
+      <span ng-if="result.identical_matches.length > 0" class="related-desc">
+        <br/>
+        ... and {{ result.identical_matches.length }} related entries
+      </span>
+    </td>
+  </tr>
+</table>

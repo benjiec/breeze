@@ -6,7 +6,17 @@ form input[type=number] { width: 50px; }
 #results-list { width: 60%; }
 #results-summary { margin-left: 10px; border-left: 1px solid #ddd; padding-left: 10px; width: 35%; }
 
+.tab-pane { padding-top: 10px; }
 .related-desc { padding-left: 20px; }
+
+.overlay {
+  display: block !important; 
+  margin-top: 1px; margin-bottom: 1px;
+  font-size: 0.9em;
+  cursor: pointer;
+  text-align: left !important;
+  font-weight: normal !important;
+}
 
 .alignment-container { margin: 15px; }
 table.alignment { font-size:0.9em; white-space:pre; border-collapse:collapse; border-spacing:0px; }

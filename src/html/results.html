@@ -33,32 +33,25 @@
 
 <div class="pull-left" id="results-summary">
   <p>
-    <a href="javascript:void(0);" ng-click="controls.to_show=null">Show all</a> </li>
+    <a href="javascript:void(0);" ng-click="controls.to_show=null">Show all alignments</a> </li>
   </p>
-  <table class="table table-condensed table-bordered">
-    <tr class="success">
-      <th>Q (/{{ query.sequence.length }})</th> <th>E</th> <th>%</th> <th>Match</th>
-    </tr>
-    <tr ng-repeat="result in results">
-      <td>
-        {{ result.res.query_start }}-{{ result.res.query_end }}
-      </td>
-      <td>
-        {{ result.res.evalue }}
-      </td>
-      <td>
-        {{ (100*result.res.identities/result.res.alignment.match.length).toFixed(1) }}
-      </td>
-      <td>
-        <a href="javascript:void(0);" ng-click="controls.to_show=$index">{{ result.res.accession }}</a>
-        <a href="{{ result.obj.url }}">{{ result.obj.name|trunc:30 }}</a>
-        <span ng-if="result.identical_matches.length > 0" class="related-desc">
-          <br/>
-          ... and {{ result.identical_matches.length }} related entries
-        </span>
-      </td>
-    </tr>
-  </table>
+
+  <div id="summary-tabs">
+    <ul class="nav nav-tabs">
+      <li class="active"><a ng-click="showSummary(0, 'summary-overlay')">Overlay</a></li>
+      <li><a ng-click="showSummary(1, 'summary-table')">Table</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="summary-overlay">
+        <partial template="summary-overlay"></partial>
+      </div>
+      <div class="tab-pane" id="summary-table">
+        <partial template="summary-table"></partial>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 </div>
