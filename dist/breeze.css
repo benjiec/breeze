@@ -5,8 +5,6 @@ form input[type=number] { width: 50px; }
 #results { margin-top: 25px; }
 #results-list { width: 60%; }
 #results-summary { margin-left: 10px; border-left: 1px solid #ddd; padding-left: 10px; width: 35%; }
-#results-summary ul { list-style: none; margin: 0; padding: 0; }
-#results-summary li { white-space: nowrap; }
 
 .related-desc { padding-left: 20px; }
 

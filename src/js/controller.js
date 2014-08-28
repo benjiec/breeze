@@ -124,7 +124,9 @@ function BreezeController($scope, $http) {
   }
 
   $scope.makeQuery = function() {
-    if (!$scope.query.sequence || !$scope.query.db || !$scope.query.input) {
+    if ($scope.query.sequence) { $scope.query.sequence.trim(); }
+
+    if (!$scope.query.sequence || $scope.query.sequence === '' || !$scope.query.db || !$scope.query.input) {
       alert("Please enter a sequence, select sequence type, and a database");
       return;
     }

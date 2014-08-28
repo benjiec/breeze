@@ -10,20 +10,21 @@
   </p>
 
   <div ng-repeat="result in results">
-    <div ng-if="controls.to_show === undefined || controls.to_show === null || controls.to_show === $index">
-      <p>
-        <b>
-          {{ result.res.accession }}:
-          e-value: {{ result.res.evalue }}.
-          identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
-        </b>
+    <div ng-if="controls.to_show === undefined || controls.to_show === null || controls.to_show === $index"
+         class="panel panel-default">
+      <div class="panel-heading">
+        <b>{{ result.res.accession }}</b> <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
         <br/>
-        <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
-      </p>
-      <div class="alignment-container" ng-bind-html="result.alignment.wrapped_html()"></div>
-      <div ng-if="result.identical_matches.length > 0" class="related-desc">
-        Also matches at least {{ result.identical_matches.length }} related entries:
-        <partial template="identical"></partial>
+        Query: {{ result.res.query_start }}-{{ result.res.query_end }}/{{ query.sequence.length }}.
+        E-value: {{ result.res.evalue }}.
+        Identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
+      </div>
+      <div class="panel-body">
+        <div class="alignment-container" ng-bind-html="result.alignment.wrapped_html()"></div>
+        <div ng-if="result.identical_matches.length > 0" class="related-desc">
+          Also matches at least {{ result.identical_matches.length }} related entries:
+          <partial template="identical"></partial>
+        </div>
       </div>
     </div>
   </div>
@@ -31,19 +32,33 @@
 </div>
 
 <div class="pull-left" id="results-summary">
-  <ul>
-    <li> <a href="javascript:void(0);" ng-click="controls.to_show=null">Show all</a> </li>
-    <li ng-repeat="result in results">
-      <a href="javascript:void(0);" ng-click="controls.to_show=$index">{{ result.res.accession }}</a>
-      {{ result.res.evalue }}.
-      {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
-      <a href="{{ result.obj.url }}">{{ result.obj.name|trunc:30 }}</a>
-      <span ng-if="result.identical_matches.length > 0" class="related-desc">
-        <br/>
-        ... and {{ result.identical_matches.length }} related entries
-      </span>
-    </li>
-  </ul>
+  <p>
+    <a href="javascript:void(0);" ng-click="controls.to_show=null">Show all</a> </li>
+  </p>
+  <table class="table table-condensed table-bordered">
+    <tr class="success">
+      <th>Q (/{{ query.sequence.length }})</th> <th>E</th> <th>%</th> <th>Match</th>
+    </tr>
+    <tr ng-repeat="result in results">
+      <td>
+        {{ result.res.query_start }}-{{ result.res.query_end }}
+      </td>
+      <td>
+        {{ result.res.evalue }}
+      </td>
+      <td>
+        {{ (100*result.res.identities/result.res.alignment.match.length).toFixed(1) }}
+      </td>
+      <td>
+        <a href="javascript:void(0);" ng-click="controls.to_show=$index">{{ result.res.accession }}</a>
+        <a href="{{ result.obj.url }}">{{ result.obj.name|trunc:30 }}</a>
+        <span ng-if="result.identical_matches.length > 0" class="related-desc">
+          <br/>
+          ... and {{ result.identical_matches.length }} related entries
+        </span>
+      </td>
+    </tr>
+  </table>
 </div>
 
 </div>
