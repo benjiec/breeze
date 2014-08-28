@@ -9,6 +9,8 @@ window.BreezeAlignment = function(query_start, query_end, subject_start, subject
   var mismatch = getMisMatch(match);
 
   function wrapped_html(rowlen) {
+    if (!/\S/.test(mismatch)) { return 'No mismatch in alignment'; }
+
     if (rowlen === undefined) { rowlen = 80; }
 
     var rsplit = new RegExp('(.{1,'+rowlen+'})', 'g');
