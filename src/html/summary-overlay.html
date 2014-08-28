@@ -1,12 +1,21 @@
-<div class="label label-danger overlay" ng-repeat="result in results"
+<p>
+  Order by:
+  <a ng-click="overlay_order='evalue'">E-value</a>,
+  <a ng-click="overlay_order='query_start'">Position</a>
+</p>
+
+<div class="label label-primary overlay" style="margin-left: 0%; width: 100%">Query</div>
+<div class="label label-danger overlay"
+     ng-repeat="result in results|orderBy:overlay_order"
      style="margin-left: {{((result.res.query_start-1)*100/result_query.length).toFixed(2)}}%;
             width: {{((result.res.query_end-result.res.query_start+1)*100/result_query.length).toFixed(2)}}%; "
-     ng-click="controls.to_show=$index">
-  {{ (result.res.identities*100/result.res.alignment.match.length).toFixed(1) }}%
+     ng-click="controls.to_show=$index"
+     title="{{ result.res.accession }} {{ result.obj.name }} {{ (result.res.identities*100/result.res.alignment.match.length).toFixed(1) }}% identity">
   {{ result.res.accession }}
+  {{ result.obj.name|trunc:30 }}
   <span ng-if="result.identical_matches.length > 0">
     ({{ result.identical_matches.length }} related)
   </span>
-  {{ result.obj.name|trunc:30 }}
+  {{ (result.res.identities*100/result.res.alignment.match.length).toFixed(1) }}% identity
 </div>
 <div class="label label-primary overlay" style="margin-left: 0%; width: 100%">Query</div>

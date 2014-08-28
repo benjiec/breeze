@@ -36,13 +36,18 @@ function BreezeController($scope, $http) {
 
     $scope.flat_results = _.map(results, function(res) {
       res.accession = res.label;
+
       checkDegen(res);
       var d = {
         res: res,
         alignment: BreezeAlignment(res.query_start, res.query_end, res.subject_start, res.subject_end,
                                    res.alignment.query, res.alignment.match, res.alignment.subject),
         identical_matches: null,
-        obj: null
+        obj: null,
+
+        // for sorting
+        query_start: res.query_start,
+        evalue: res.evalue
       };
       data[res.accession] = d;
       return d;
@@ -67,7 +72,10 @@ function BreezeController($scope, $http) {
           }
           return x.identical_matches.length > y.identical_matches.length ? -1 : 1;
         });
+
+        // this will trigger rendering
         $scope.results = r;
+        $scope.overlay_order = 'evalue';
       });
     }
 
@@ -162,6 +170,7 @@ function BreezeController($scope, $http) {
     $scope.results = null;
     $scope.flat_results = null;
     $scope.controls.to_show = null;
+    $scope.overlay_order = null;
 
     $http({
       method: 'POST',
@@ -207,6 +216,7 @@ app.filter('encodeURIComponent', function() { return window.encodeURIComponent; 
 app.filter('encodeURI', function() { return window.encodeURI; });
 app.filter('trunc', function() {
   return function(s, n) {
+    if (!s) { return ''; }
     if (n === undefined) n = 20;
     return s.length <= n ? s : s.substr(0, n)+'...';
   };
