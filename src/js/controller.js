@@ -21,6 +21,7 @@ function BreezeController($scope, $http) {
                    identity_threshold: 0.5, feature_threshold: 0.0 };
   $scope.submitted = false;
   $scope.databases = window.BreezeConfig._databases;
+  $scope.result_query = null;
   $scope.results = null;
   $scope.flat_results = null;
   $scope.controls = {to_show: null };
@@ -157,6 +158,7 @@ function BreezeController($scope, $http) {
     }).join("&");
 
     $scope.submitted = true;
+    $scope.result_query = $scope.query.sequence;
     $scope.results = null;
     $scope.flat_results = null;
     $scope.controls.to_show = null;

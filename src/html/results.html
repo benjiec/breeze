@@ -15,7 +15,7 @@
       <div class="panel-heading">
         <b>{{ result.res.accession }}</b> <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>
         <br/>
-        Query: {{ result.res.query_start }}-{{ result.res.query_end }}/{{ query.sequence.length }}.
+        Query: {{ result.res.query_start }}-{{ result.res.query_end }}/{{ result_query.length }}.
         E-value: {{ result.res.evalue }}.
         Identities: {{ result.res.identities }}/{{ result.res.alignment.match.length }}.
       </div>
