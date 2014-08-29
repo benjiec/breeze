@@ -16,7 +16,7 @@ window.BreezeConfig = function() {
 
 }();
 
-function BreezeController($scope, $http) {
+function BreezeController($scope, $http, $routeParams) {
   $scope.query = { sequence: null, db: null, input: 'dna',
                    identity_threshold: 0.5, feature_threshold: 0.0 };
   $scope.submitted = false;
@@ -25,6 +25,8 @@ function BreezeController($scope, $http) {
   $scope.results = null;
   $scope.flat_results = null;
   $scope.controls = {to_show: null };
+
+  if ($routeParams.query) { $scope.query.sequence = $routeParams.query; }
 
   function processResults(fetch_obj_f, results) {
     var data = {};

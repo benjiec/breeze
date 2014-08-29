@@ -3,7 +3,9 @@ var app = angular.module('breeze', ['ngRoute', 'ngSanitize'])
     $routeProvider
       .when('/',
             { template: JST['breeze'], controller: BreezeController})
-      .otherwise({redirectTo: '/breeze'});
+      .when('/q/:query',
+            { template: JST['breeze'], controller: BreezeController})
+      .otherwise({redirectTo: '/'});
   }]);
 
 app.directive('partial', function($compile) {
