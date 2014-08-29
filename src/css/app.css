@@ -1,6 +1,8 @@
 .sequence { font-family: courier; }
 #query { width:500px; height:200px; }
 form input[type=number] { width: 50px; }
+.select-dbs { width: 600px; }
+.select-db { display: inline-block; margin-right: 10px; }
 
 #results { margin-top: 25px; }
 #results-list { width: 60%; }
