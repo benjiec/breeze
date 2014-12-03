@@ -1,6 +1,6 @@
 <p>
   Order by:
-  <a ng-click="overlay_order='evalue'">E-value</a>,
+  <a ng-click="overlay_order='default_sort_index'">Match</a>,
   <a ng-click="overlay_order='query_start'">Position</a>
 </p>
 
@@ -10,12 +10,12 @@
      style="margin-left: {{((result.res.query_start-1)*100/result_query.length).toFixed(2)}}%;
             width: {{((result.res.query_end-result.res.query_start+1)*100/result_query.length).toFixed(2)}}%; "
      ng-click="controls.to_show=result.res.accession"
-     title="{{ result.res.accession }} {{ result.obj.name }} {{ (result.res.identities*100/result.res.alignment.match.length).toFixed(1) }}% identity">
+     title="{{ result.res.accession }} {{ result.obj.name }} {{ result.percent_identities.toFixed(1) }}% identity">
   {{ result.res.accession }}
   {{ result.obj.name|trunc:30 }}
   <span ng-if="result.identical_matches.length > 0">
     ({{ result.identical_matches.length }} related)
   </span>
-  {{ (result.res.identities*100/result.res.alignment.match.length).toFixed(1) }}% identity
+  {{ result.percent_identities.toFixed(1) }}% identity
 </div>
 <div class="label label-primary overlay" style="margin-left: 0%; width: 100%">Query</div>

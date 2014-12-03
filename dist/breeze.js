@@ -43,6 +43,7 @@ function BreezeController($scope, $http, $routeParams) {
         res: res,
         alignment: BreezeAlignment(res.query_start, res.query_end, res.subject_start, res.subject_end,
                                    res.alignment.query, res.alignment.match, res.alignment.subject),
+        percent_identities: res.identities*100/res.alignment.match.length,
         identical_matches: null,
         obj: null,
 
@@ -70,12 +71,13 @@ function BreezeController($scope, $http, $routeParams) {
           if (x.res.evalue !== y.res.evalue) {
             return x.res.evalue > y.res.evalue ? 1 : -1;
           }
-          return x.identical_matches.length > y.identical_matches.length ? -1 : 1;
+          return x.percent_identities > y.percent_identities ? -1 : 1;
         });
+        _.each(r, function(x, i) { x.default_sort_index = i; });
 
         // this will trigger rendering
         $scope.results = r;
-        $scope.overlay_order = 'evalue';
+        $scope.overlay_order = 'default_sort_index';
       });
     }
 
