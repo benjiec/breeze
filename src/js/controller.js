@@ -23,7 +23,6 @@ function BreezeController($scope, $http, $routeParams) {
   $scope.databases = window.BreezeConfig._databases;
   $scope.result_query = null;
   $scope.results = null;
-  $scope.flat_results = null;
   $scope.controls = {to_show: null };
 
   if ($routeParams.query) { $scope.query.sequence = $routeParams.query; }
@@ -36,7 +35,7 @@ function BreezeController($scope, $http, $routeParams) {
       return;
     }
 
-    $scope.flat_results = _.map(results, function(res) {
+    _.each(results, function(res) {
       res.accession = res.label;
 
       checkDegen(res);
@@ -52,7 +51,6 @@ function BreezeController($scope, $http, $routeParams) {
         evalue: res.evalue
       };
       data[res.accession] = d;
-      return d;
     });
 
     if (fetch_obj_f !== undefined && _.keys(data).length > 0) {

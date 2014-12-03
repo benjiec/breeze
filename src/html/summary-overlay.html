@@ -9,7 +9,7 @@
      ng-repeat="result in results|orderBy:overlay_order"
      style="margin-left: {{((result.res.query_start-1)*100/result_query.length).toFixed(2)}}%;
             width: {{((result.res.query_end-result.res.query_start+1)*100/result_query.length).toFixed(2)}}%; "
-     ng-click="controls.to_show=$index"
+     ng-click="controls.to_show=result.res.accession"
      title="{{ result.res.accession }} {{ result.obj.name }} {{ (result.res.identities*100/result.res.alignment.match.length).toFixed(1) }}% identity">
   {{ result.res.accession }}
   {{ result.obj.name|trunc:30 }}

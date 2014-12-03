@@ -10,7 +10,7 @@
   </p>
 
   <div ng-repeat="result in results">
-    <div ng-if="controls.to_show === undefined || controls.to_show === null || controls.to_show === $index"
+    <div ng-if="controls.to_show===undefined || controls.to_show===null || controls.to_show===result.res.accession"
          class="panel panel-default">
       <div class="panel-heading">
         <b>{{ result.res.accession }}</b> <a href="{{ result.obj.url }}">{{ result.obj.name }}</a>

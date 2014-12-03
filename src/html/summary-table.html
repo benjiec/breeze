@@ -13,7 +13,7 @@
       {{ (100*result.res.identities/result.res.alignment.match.length).toFixed(1) }}
     </td>
     <td>
-      <a href="javascript:void(0);" ng-click="controls.to_show=$index"
+      <a href="javascript:void(0);" ng-click="controls.to_show=result.res.accession"
        >{{ result.res.accession }} {{ result.obj.name|trunc:30 }}</a>
       <span ng-if="result.identical_matches.length > 0" class="related-desc">
         <br/>
